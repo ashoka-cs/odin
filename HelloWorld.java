@@ -4,6 +4,6 @@ class HelloWorld
 	{
 		System.out.println("Sorry about the long name, Professor :P");
 		System.out.println("Testing. This is Aniruddha. Adding a second line");
-		System.out.println("Testing. This is Aniruddha. Adding a third line via GitHub desktop.")
+		System.out.println("Testing. This is Aniruddha. Adding a third line via GitHub desktop.");
 	}
 }
