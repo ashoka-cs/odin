@@ -19,4 +19,6 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^odin/', include('onlinejudge.urls')),
+    #url(r'^signup/', include('onlinejudge.urls')),
+    
 ]
