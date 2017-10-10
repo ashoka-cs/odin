@@ -1,0 +1,36 @@
+<!-- parent template from which all other temapltes inherit -->
+
+<!doctype html>
+
+<html>
+
+<head>
+  <title>{% block title %} Odin {% endblock %}</title>
+
+</head>
+
+
+<body>
+  <div id= "navbar">
+       {% block navbar %}
+       <ul>
+           <li><a href="/odin/"> Index </a>
+
+           – About
+
+          <a href="/odin/problemset/"> – Problemset </a>
+
+          – My Account </li>
+       </ul>
+       {% endblock %}
+   </div>
+
+
+   <div id= "content">
+       {% block content %}{% endblock %}
+   </div>
+
+
+</body>
+
+</html>
