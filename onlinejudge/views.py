@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import Problem
 
 # Create your views here.
 def index(requests):
@@ -8,4 +9,5 @@ def signup(requests):
 def login(requests):
     return render(requests, 'login.html', {})
 def problemset(requests):
-    return render(requests, 'problemset.html', {})
+    problems = Problem.objects.all()
+    return render(requests, 'problemset.html', {'problems' : problems})
