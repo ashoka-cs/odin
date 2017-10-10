@@ -1,26 +1,21 @@
 <!-- parent template from which all other temapltes inherit -->
-
+{% load static %}
 <!doctype html>
 
 <html>
 
 <head>
   <title>{% block title %} Odin {% endblock %}</title>
-
+   <link rel="stylesheet" type="text/css" href="{% static 'index.css' %}">
 </head>
 
 
 <body>
   <div id= "navbar">
        {% block navbar %}
-       <ul>
-           <li><a href="/odin/"> Index </a>
-
-           – About
-
-          <a href="/odin/problemset/"> – Problemset </a>
-
-          – My Account </li>
+       <ul class="navbar">
+         	<li><a href="{% url 'login' %}"> LOGIN </a></li>
+         <li><a href="{% url 'problemset' %}">PROBLEMSET </a></li>
        </ul>
        {% endblock %}
    </div>
