@@ -1,17 +1,15 @@
-<!-- child template that inherits from base.html -->
-
 
 {% extends "base.html" %}
 
 {% block title %} Problemset page    {% endblock %}
 
-
 {% block content %}
     {% for problem in problems %}
     {{ problem.problem_id }}
-    <hr>
+    <br>
     {{problem.problem_title }}
-    <hr>
+    <br>
     {{problem.problem_statement }}
+    <hr>
     {% endfor %}
 {% endblock %}

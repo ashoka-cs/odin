@@ -7,6 +7,6 @@ urlpatterns = [
     url(r'^signup/$', views.signup, name="signup"),
     url(r'^$', auth_views.login, name="login"),
     #url(r'^login/$', views.login, name="login"),
-    url(r'^problemset/$', views.problemset, name="problemset")
-   
+    url(r'^problemset/$', views.problemset, name="problemset"),
+    url(r'^submissions/$', views.submissions, name = "submissions"),
 ]

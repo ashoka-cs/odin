@@ -9,23 +9,19 @@
    <link rel="stylesheet" type="text/css" href="{% static 'index.css' %}">
 </head>
 
-
 <body>
-  <div id= "navbar">
-       {% block navbar %}
-       <ul class="navbar">
-         	<li><a href="{% url 'login' %}"> LOGIN </a></li>
-         <li><a href="{% url 'problemset' %}">PROBLEMSET </a></li>
+    <div id= "navbar">
+      {% block navbar %}
+        <ul class="navbar">
+          <li><a href="{% url 'login' %}"> LOGIN </a></li>
+          <li><a href="{% url 'problemset' %}"> PROBLEMSET </a></li>
+          <li><a href="{% url 'submissions' %}"> SUBMISSIONS </a></li>
        </ul>
-       {% endblock %}
-   </div>
-
-
-   <div id= "content">
-       {% block content %}{% endblock %}
-   </div>
-
-
+      {% endblock %}
+    </div>
+    
+    <div id= "content">
+          {% block content %}{% endblock %}
+    </div>
 </body>
-
 </html>

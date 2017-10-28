@@ -8,6 +8,13 @@ def signup(requests):
     return render(requests, 'signup.html', {})
 def login(requests):
     return render(requests, 'login.html', {})
+
 def problemset(requests):
     problems = Problem.objects.all()
+
     return render(requests, 'problemset.html', {'problems' : problems})
+
+def submissions(requests):
+    problems = Problem.objects.all()
+
+    return render(requests, 'submissions.html', {'problems': problems})
