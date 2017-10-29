@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from .models import Problem
+#from django.http import HttpResponseRedirect
+
+from .forms import SubmissionForm
 
 # Create your views here.
 def index(requests):
@@ -17,4 +20,23 @@ def problemset(requests):
 def submissions(requests):
     problems = Problem.objects.all()
 
-    return render(requests, 'submissions.html', {'problems': problems})
+    # if this is a POST request we need to process the form data
+    if requests.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = SubmissionForm(requests.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            cleaned_data=form.cleaned_data
+
+            return render(requests, 'verdict.html', {'cleaned_data': cleaned_data})
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = SubmissionForm()
+        return render(requests, 'submissions.html', {'form':form})
+
+
+

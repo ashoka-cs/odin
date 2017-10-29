@@ -4,19 +4,11 @@
 {% block title %} Submit {% endblock %}
 
 {% block content %}
-  <form >
-  <select>
-   {% for problem in problems %}
-   <option value="{{problem.problem_id}}"> {{problem.problem_title}} </option>
-   {% endfor %}
- </select>
-
-  Enter Code: <input type="text" name="code"><br>
+  
+  <form action="" method="post">
+  {% csrf_token %}
+  {{ form }}
   <input type="submit" value="Submit">
-
-  <select>
-    <option value = "python3"> Python 3 </option>
-  </select>
-</form>
+  </form>
 
 {% endblock %}
