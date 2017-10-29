@@ -1,8 +1,12 @@
 from django.shortcuts import render
 from .models import Problem
 #from django.http import HttpResponseRedirect
-
+import os
 from .forms import SubmissionForm
+import datetime
+
+
+
 
 # Create your views here.
 def index(requests):
@@ -30,7 +34,13 @@ def submissions(requests):
             # ...
             # redirect to a new URL:
             cleaned_data=form.cleaned_data
-
+            date=datetime.datetime.now()
+            strdate=str(date).replace(" ","")
+            nameoffile="submissions/"+strdate+"."+cleaned_data['language']
+            with open(nameoffile, "w") as submissionfile:
+                submissionfile.write(cleaned_data['code'])
+            if cleaned_data['language']=='py':
+                os.system	("python " + nameoffile)
             return render(requests, 'verdict.html', {'cleaned_data': cleaned_data})
 
     # if a GET (or any other method) we'll create a blank form
