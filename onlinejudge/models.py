@@ -17,4 +17,8 @@ class Submission(models.Model):
     problem_id = models.ForeignKey(Problem)
     time__of_submission = datetime.datetime.now()
     user_id = models.ForeignKey(User)
+
+    LANGUAGES = [['py','Python 3'],['cpp','C++']]
+
+    language = models.CharField(max_length = 20, default = 'py', choices = LANGUAGES)
     code = models.TextField()
