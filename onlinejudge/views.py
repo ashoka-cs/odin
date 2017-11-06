@@ -43,7 +43,7 @@ def submissions(requests):
                 submissionfile.write(cleaned_data['code'])
             if cleaned_data['language']=='py':
                 os.system	("python " + nameoffile)
-            print(cleaned_data['problem'].problem_id)
+            #print(cleaned_data['problem'].problem_id)
             obj = form.save(commit=False)
             obj.user = requests.user
             obj.save()
