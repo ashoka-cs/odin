@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from .models import Problem
+from .models import Problem, SubmissionForm
 #from django.http import HttpResponseRedirect
 import os
-from .forms import SubmissionForm
+#from .forms import SubmissionForm
 import datetime
 
 
@@ -11,8 +11,10 @@ import datetime
 # Create your views here.
 def index(requests):
     return render(requests, 'index.html', {}) # the third argument is for variables to be passed to the file
+
 def signup(requests):
     return render(requests, 'signup.html', {})
+
 def login(requests):
     return render(requests, 'login.html', {})
 
@@ -22,7 +24,7 @@ def problemset(requests):
     return render(requests, 'problemset.html', {'problems' : problems})
 
 def submissions(requests):
-    problems = Problem.objects.all()
+        
 
     # if this is a POST request we need to process the form data
     if requests.method == 'POST':
@@ -41,8 +43,11 @@ def submissions(requests):
                 submissionfile.write(cleaned_data['code'])
             if cleaned_data['language']=='py':
                 os.system	("python " + nameoffile)
+            print(cleaned_data['problem'].problem_id)
+            obj = form.save(commit=False)
+            obj.user = requests.user
+            obj.save()
             return render(requests, 'verdict.html', {'cleaned_data': cleaned_data})
-
     # if a GET (or any other method) we'll create a blank form
     else:
         form = SubmissionForm()
