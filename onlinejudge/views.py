@@ -44,36 +44,46 @@ def submissions(requests):
             obj.user = requests.user
             obj.save()
 
-            # 1. We construct paths of submission file, input file, expected output file
-            submission_filepath = "submissions/" + str(obj.id) + "." + language
-            input_filepath = "problems/" + str(problem_id) + "/input.txt"
-            expected_output_filepath = "problems/" + str(problem_id) + "/expected_output.txt"
+            
+            
+            
+            
 
-            # 2. We save the file
+            # 1. We construct the path of submission file, and save the file
+            submission_filepath = "submissions/" + str(obj.id) + "." + language
             save_to_file(submission_filepath, code)
 
-            # 3. Then we run the program using inputfile as the input and output to a given file.
-            print(obj.problem.timelimit)
-            os.system("./timeout -t " + str(obj.problem.timelimit) + " -m " + str(obj.problem.memlimit) +" python3 " + submission_filepath + " < " + input_filepath + " 1> temp.txt 2> err.txt")
-            #By default, 1> redirects the python output, 2> redirects the error message
+            
+            for i in range(1,obj.problem.no_of_test_cases+1):
+                # 2. We construct paths input file, expected output file
+                input_filepath = "problems/" + str(problem_id) + "/input"+str(i)+".txt"
+                expected_output_filepath = "problems/" + str(problem_id) + "/expected_output"+str(i)+".txt"
 
-            # 3a Check if a timeout occurred, or program failed to compile.
-            with open("err.txt") as timeout_file:
-                lineone = timeout_file.readline().split()
-                print(lineone)
+                # 3. Then we run the program using inputfile as the input and output to a given file.
+                os.system("./timeout -t " + str(obj.problem.timelimit) + " -m " + str(obj.problem.memlimit) +" python3 " + submission_filepath + " < " + input_filepath + " 1> temp.txt 2> err.txt")
+                #By default, 1> redirects the python output, 2> redirects the error message
 
-                if lineone[0]=="TIMEOUT":
-                    verdict = "Time Limit Exceeded"
-                elif lineone[0]=="MEM":
-                    verdict = "Memory Limit Exceeded"
-                elif lineone[0]=="FINISHED":
-                    verdict = compare_files(expected_output_filepath, "temp.txt")
-                else:
-                    verdict = "Compilation/Runtime Error"
-            # 4. Check if output matches expected output.
-            print(verdict)
+                # 3a Check if a timeout occurred, or program failed to compile.
+                with open("err.txt") as timeout_file:
+                    lineone = timeout_file.readline().split()
+                    #print (lineone)
 
-            # 5. Create a variable and pass it to the verdicts page. The variable should contain "AC" if the outputs match, or "WA" if they don't. This is sufficient for now.
+                    if lineone[0]=="TIMEOUT":
+                        verdict = "Time Limit Exceeded"
+                        break
+                    elif lineone[0]=="MEM":
+                        verdict = "Memory Limit Exceeded"
+                        break
+                    # 3b. Check if output matches expected output.
+                    elif lineone[0]=="FINISHED":
+                        verdict = compare_files(expected_output_filepath, "temp.txt")
+                    else:
+                        verdict = "Compilation/Runtime Error"
+                        break
+            
+            
+
+            # 4. Create a variable and pass it to the verdicts page. The variable should contain "AC" if the outputs match, or "WA" if they don't. This is sufficient for now.
 
             return render(requests, 'verdict.html', {'cleaned_data': cleaned_data, 'verdict' : verdict})
 

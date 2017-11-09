@@ -11,6 +11,7 @@ class Problem(models.Model):
     problem_statement = models.TextField()
     timelimit = models.IntegerField(default=1)
     memlimit = models.IntegerField(default=256000)
+    no_of_test_cases= models.IntegerField(default=1)
     
     def __str__(self):
         return str(self.problem_id) + " : " + self.problem_title
