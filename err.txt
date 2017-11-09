@@ -1,5 +1,1 @@
-Traceback (most recent call last):
-  File "submissions/36.py", line 1, in <module>
-    hlqfpqipiqgle
-NameError: name 'hlqfpqipiqgle' is not defined
 FINISHED CPU 0.00 MEM 0 MAXMEM -1 STALE 0 MAXMEM_RSS -1

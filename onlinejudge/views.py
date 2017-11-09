@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Problem, SubmissionForm
 import os
 import datetime
-import onlinejudge.views_functions
+from onlinejudge.views_functions import*
 
 
 # redundant view
@@ -19,7 +19,6 @@ def login(requests):
 
 def problemset(requests):
     problems = Problem.objects.all()
-
     return render(requests, 'problemset.html', {'problems' : problems})
 
 def submissions(requests):
@@ -35,7 +34,7 @@ def submissions(requests):
             # redirect to a new URL:
 
             # Collating the data into usable variable names
-            cleaned_data=form.cleaned_data
+            cleaned_data = form.cleaned_data
             code = cleaned_data["code"]
             language = cleaned_data["language"]
             problem_id = cleaned_data["problem"].problem_id
@@ -46,16 +45,16 @@ def submissions(requests):
             obj.save()
 
             # 1. We construct paths of submission file, input file, expected output file
-            submissionfilepath = "submissions/" + str(obj.id) + "." + language
-            inputfilepath = "problems/" + str(problem_id) + "/input.txt"
-            expectedoutputfilepath = "problems/" + str(problem_id) + "/expected_output.txt"
+            submission_filepath = "submissions/" + str(obj.id) + "." + language
+            input_filepath = "problems/" + str(problem_id) + "/input.txt"
+            expected_output_filepath = "problems/" + str(problem_id) + "/expected_output.txt"
 
             # 2. We save the file
-            savetofile(submissionfilepath, code)
+            save_to_file(submission_filepath, code)
 
             # 3. Then we run the program using inputfile as the input and output to a given file.
             print(obj.problem.timelimit)
-            os.system("./timeout -t " + str(obj.problem.timelimit) + " -m " + str(obj.problem.memlimit) +" python3 " + submissionfilepath + " < " + inputfilepath + " 1> temp.txt 2> err.txt")
+            os.system("./timeout -t " + str(obj.problem.timelimit) + " -m " + str(obj.problem.memlimit) +" python3 " + submission_filepath + " < " + input_filepath + " 1> temp.txt 2> err.txt")
             #By default, 1> redirects the python output, 2> redirects the error message
 
             # 3a Check if a timeout occurred, or program failed to compile.
@@ -66,9 +65,9 @@ def submissions(requests):
                 if lineone[0]=="TIMEOUT":
                     verdict = "Time Limit Exceeded"
                 elif lineone[0]=="MEM":
-                    verdict="Memory Limit Exceeded"
+                    verdict = "Memory Limit Exceeded"
                 elif lineone[0]=="FINISHED":
-                    verdict=compare_files(expectedoutputfilepath, "temp.txt")
+                    verdict = compare_files(expected_output_filepath, "temp.txt")
                 else:
                     verdict = "Compilation/Runtime Error"
             # 4. Check if output matches expected output.
@@ -76,9 +75,8 @@ def submissions(requests):
 
             # 5. Create a variable and pass it to the verdicts page. The variable should contain "AC" if the outputs match, or "WA" if they don't. This is sufficient for now.
 
-
             return render(requests, 'verdict.html', {'cleaned_data': cleaned_data, 'verdict' : verdict})
-            
+
     # if a GET (or any other method) we'll create a blank form
     else:
         form = SubmissionForm()
