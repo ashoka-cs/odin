@@ -13,7 +13,7 @@ class Problem(models.Model):
     memlimit = models.IntegerField(default=256000)
     
     def __str__(self):
-        return str(self.problem_id) + " : " + self.problem_statement[0:10]
+        return str(self.problem_id) + " : " + self.problem_title
 
 class Submission(models.Model):
     problem = models.ForeignKey(Problem, on_delete= models.CASCADE)
