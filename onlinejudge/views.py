@@ -30,64 +30,28 @@ def submissions(requests):
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-
-            # Collating the data into usable variable names
             cleaned_data = form.cleaned_data
-            code = cleaned_data["code"]
-            language = cleaned_data["language"]
-            problem_id = cleaned_data["problem"].problem_id
-            problem = cleaned_data["problem"]
 
             obj = form.save(commit=False)
             obj.user = requests.user
             obj.save()
 
-            
-            
-            
-            
 
-            # 1. We construct the path of submission file, and save the file
-            submission_filepath = "submissions/" + str(obj.id) + "." + language
-            save_to_file(submission_filepath, code)
+            verdict = check_cases(obj)
 
             
-            for i in range(1,obj.problem.no_of_test_cases+1):
-                # 2. We construct paths input file, expected output file
-                input_filepath = "problems/" + str(problem_id) + "/input"+str(i)+".txt"
-                expected_output_filepath = "problems/" + str(problem_id) + "/expected_output"+str(i)+".txt"
+            # Create a variable and pass it to the verdicts page. 
 
-                # 3. Then we run the program using inputfile as the input and output to a given file.
-                os.system("./timeout -t " + str(obj.problem.timelimit) + " -m " + str(obj.problem.memlimit) +" python3 " + submission_filepath + " < " + input_filepath + " 1> temp.txt 2> err.txt")
-                #By default, 1> redirects the python output, 2> redirects the error message
-
-                # 3a Check if a timeout occurred, or program failed to compile.
-                with open("err.txt") as timeout_file:
-                    lineone = timeout_file.readline().split()
-                    #print (lineone)
-
-                    if lineone[0]=="TIMEOUT":
-                        verdict = "Time Limit Exceeded"
-                        break
-                    elif lineone[0]=="MEM":
-                        verdict = "Memory Limit Exceeded"
-                        break
-                    # 3b. Check if output matches expected output.
-                    elif lineone[0]=="FINISHED":
-                        verdict = compare_files(expected_output_filepath, "temp.txt")
-                    else:
-                        verdict = "Compilation/Runtime Error"
-                        break
-            
-            
-
-            # 4. Create a variable and pass it to the verdicts page. The variable should contain "AC" if the outputs match, or "WA" if they don't. This is sufficient for now.
-
-            return render(requests, 'verdict.html', {'cleaned_data': cleaned_data, 'verdict' : verdict})
+            return render(requests, 'verdict.html', {'cleaned_data': form.cleaned_data, 'verdict' : verdict})
 
     # if a GET (or any other method) we'll create a blank form
     else:
         form = SubmissionForm()
         return render(requests, 'submissions.html', {'form':form})
+
+
+
+
+
+
+
