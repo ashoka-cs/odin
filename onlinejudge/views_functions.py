@@ -5,23 +5,25 @@ from django.shortcuts import render
 
 # For each submission, the verdict is checked for each test case.
 def check_cases(submission):
-  
+
     submission_filepath = "submissions/" + str(submission.id) + "." + submission.language
+    submission_id = str(submission.id)
     save_to_file(submission_filepath, submission.code)
 
     problem_id = submission.problem.problem_id
     no_of_test_cases = submission.problem.no_of_test_cases
+
     timelimit = submission.problem.timelimit
     memlimit = submission.problem.memlimit
     language = submission.language
-   
+
 
 
     for i in range(1, no_of_test_cases + 1):
         input_filepath = "problems/" + str(problem_id) + "/input" + str(i) + ".txt"
         expected_output_filepath = "problems/" + str(problem_id) + "/expected_output" + str(i) + ".txt"
 
-        verdict = check_verdict(submission_filepath, input_filepath, expected_output_filepath, 
+        verdict = check_verdict(submission_filepath, submission_id, input_filepath, expected_output_filepath,
             timelimit, memlimit, language)
 
         if (verdict != "Correct Answer"):
@@ -38,15 +40,31 @@ def save_to_file(name_of_file, data):
 
 
 # runs the submitted code on the system. and redirects the output and the error message to temp. txt and err.txt respectivly
-def check_verdict(submission_filepath, input_filepath, expected_output_filepath, timelimit, memlimit, language):
+def check_verdict(submission_filepath, submission_id , input_filepath, expected_output_filepath, timelimit, memlimit, language):
 
-    if language=="py":
-        os.system("./timeout -t " + str(timelimit) + " -m " + str(memlimit) +" python3 " 
+    if language == "py":
+        os.system("./timeout -t " + str(timelimit) + " -m " + str(memlimit) + " python3 "
             + submission_filepath + " < " + input_filepath + " 1> temp.txt 2> err.txt")
 
                 # By default, 1> redirects the python output, 2> redirects the error message
-        return get_verdict("err.txt",expected_output_filepath)
+        return get_verdict("err.txt", expected_output_filepath)
+
+
+    elif language == ("c"):
+
+        # What is 'r' doing?  What kind of variable is it?
+        # Why are we always getting a complilation error?
+        #
+        r = os.system("gcc -o " + "binaries/" + submission_id + " " + submission_filepath)
+
+        if r != 0:
+            return "CE"
+
+        os.system( "./timeout -t " + str(timelimit) + " -m " + str(memlimit) + " binaries/" + submission_id + " < " + input_filepath + " 1> temp.txt 2> err.txt" )
+
+        return get_verdict("err.txt", expected_output_filepath)
     return "LANGUAGE NOT FOUND"
+
 
 
 # checks err.txt, and returns the type of error. If there is no error, returns "Correct Answer"
@@ -55,7 +73,7 @@ def get_verdict(error_text, expected_output_filepath):
      #  Check if a timeout occurred, or program failed to compile.
     with open(error_text) as timeout_file:
         lineone = timeout_file.readline().split()
-        
+
 
         if lineone[0]=="TIMEOUT":
             verdict = "Time Limit Exceeded"
@@ -66,9 +84,11 @@ def get_verdict(error_text, expected_output_filepath):
         # Check if output matches expected output.
         elif lineone[0]=="FINISHED":
             verdict = compare_files(expected_output_filepath, "temp.txt")
-            if (verdict!="Correct Answer"):
+
+            if (verdict != "Correct Answer"): # the verdict can either be Correct Answer, or Wrong Answer
                 return verdict
         else:
+            print(lineone[0])
             verdict = "Compilation/Runtime Error"
             return verdict
 
@@ -89,9 +109,3 @@ def compare_files(file1, file2):
                 if (user_output[i] != expected_output[i]):
                     return "Wrong Answer"
         return "Correct Answer"
-
-
-
-
-
-
