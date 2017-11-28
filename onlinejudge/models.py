@@ -12,17 +12,21 @@ class Problem(models.Model):
     timelimit = models.IntegerField(default=1)
     memlimit = models.IntegerField(default=256000)
     no_of_test_cases= models.IntegerField(default=1)
-    
+
     def __str__(self):
         return str(self.problem_id) + " : " + self.problem_title
 
 class Submission(models.Model):
+
     problem = models.ForeignKey(Problem, on_delete= models.CASCADE)
     time_of_submission = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     code = models.TextField()
     languages = [['py','Python 3'],['cpp','C++']]
     language = models.CharField(max_length = 20, default = 'py', choices = languages)
+
+#class Contest(models.Model):
+
 
 class SubmissionForm(ModelForm):
     class Meta:

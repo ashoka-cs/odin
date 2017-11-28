@@ -1,8 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Problem, SubmissionForm
 import os
 import datetime
 from onlinejudge.views_functions import*
+
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
+
 
 
 # redundant view
@@ -31,16 +35,13 @@ def submissions(requests):
         if form.is_valid():
             # process the data in form.cleaned_data as required
             cleaned_data = form.cleaned_data
-
             obj = form.save(commit=False)
             obj.user = requests.user
             obj.save()
 
-
             verdict = check_cases(obj)
 
-            
-            # Create a variable and pass it to the verdicts page. 
+            # Create a variable and pass it to the verdicts page.
 
             return render(requests, 'verdict.html', {'cleaned_data': form.cleaned_data, 'verdict' : verdict})
 
@@ -50,8 +51,15 @@ def submissions(requests):
         return render(requests, 'submissions.html', {'form':form})
 
 
-
-
-
-
-
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'signup.html', {'form': form})
