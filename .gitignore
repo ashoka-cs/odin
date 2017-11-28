@@ -1,0 +1,4 @@
+#Ignoring all the files in the submissions folder
+submissions/
+#Ignoring all the file in the binaries folder
+binaries/
