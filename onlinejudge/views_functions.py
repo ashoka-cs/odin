@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 
 # For each submission, the verdict is checked for each test case.
-def check_cases(submission):
+def check_test_cases(submission):
 
     submission_filepath = "submissions/" + str(submission.id) + "." + submission.language
     submission_id = str(submission.id)

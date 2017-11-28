@@ -39,7 +39,9 @@ def submissions(requests):
             obj.user = requests.user
             obj.save()
 
-            verdict = check_cases(obj)
+            verdict = check_test_cases(obj)
+            obj.verdict=verdict
+            obj.save()
 
             # Create a variable and pass it to the verdicts page.
 
@@ -63,3 +65,4 @@ def signup(request):
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
+

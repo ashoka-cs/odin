@@ -24,11 +24,22 @@ class Submission(models.Model):
     code = models.TextField()
     languages = [['py','Python 3'],['cpp','C++']]
     language = models.CharField(max_length = 20, default = 'py', choices = languages)
+    verdict=models.CharField(max_length=50)
 
-#class Contest(models.Model):
+
 
 
 class SubmissionForm(ModelForm):
     class Meta:
         model = Submission
         fields = ['problem','code','language']
+
+
+class Contests(models.Model):
+    contest_title=models.CharField(max_length=200)
+    start_time=models.DateTimeField()
+    end_time=models.DateTimeField()
+    contest_description=models.TextField()
+   
+ 
+
