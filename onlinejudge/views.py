@@ -70,4 +70,5 @@ def contestlist(requests):
 
 def contest_detail(requests, contest_pk):
     contest = get_object_or_404(Contest, pk = contest_pk)
-    return render(requests, 'contest_detail.html', {'contest': contest})
+    problems=Problem.objects.filter(contest=str(contest_pk))
+    return render(requests, 'contest_detail.html', {'contest': contest,'problems': problems})
