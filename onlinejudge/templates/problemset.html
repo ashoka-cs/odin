@@ -1,15 +1,15 @@
 
 {% extends "base.html" %}
 
-{% block title %} Contests page    {% endblock %}
+{% block title %} Problemset  {% endblock %}
 
 {% block content %}
-    {% for contest in contests %}
-    {{ contest.id }}
-    <br>
-    {{contest.contest_title }}
-    <br>
-    {{contest.contest_description }}
+    {% for problem in problems %}
+        {{ problem.problem_id }}
+        <br>
+        {{problem.problem_title}}
+        <br>
+        {{problem.problem_statement}}
     <hr>
     {% endfor %}
 {% endblock %}

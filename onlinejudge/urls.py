@@ -11,5 +11,9 @@ urlpatterns = [
     url(r'^problemset/$', views.problemset, name="problemset"),
     url(r'^submissions/$', views.submissions, name = "submissions"),
     url(r'^logout/$', auth_views.logout , {'next_page': 'login'} , name="logout"),
-     url(r'^signup/$', views.signup, name='signup'),
+    url(r'^signup/$', views.signup, name='signup'),
+
+    url(r'^contestlist/$', views.contestlist, name = 'contestlist'),
+
+    url(r'^contest/(?P<contest_pk>\d+)/$', views.contest_detail, name = 'contest_detail'),
 ]

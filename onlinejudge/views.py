@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from .models import Problem, SubmissionForm
+from django.shortcuts import render, redirect,  get_object_or_404
+from .models import Problem, SubmissionForm, Contest
 import os
 import datetime
 from onlinejudge.views_functions import*
@@ -13,7 +13,7 @@ from django.contrib.auth.forms import UserCreationForm
 def index(requests):
     return render(requests, 'index.html', {}) # the third argument is for variables to be passed to the file
 
-# redundant view
+#
 def signup(requests):
     return render(requests, 'signup.html', {})
 
@@ -36,14 +36,10 @@ def submissions(requests):
             # process the data in form.cleaned_data as required
             cleaned_data = form.cleaned_data
             obj = form.save(commit=False)
+
             obj.user = requests.user
             obj.save()
-
             verdict = check_test_cases(obj)
-            obj.verdict=verdict
-            obj.save()
-
-            # Create a variable and pass it to the verdicts page.
 
             return render(requests, 'verdict.html', {'cleaned_data': form.cleaned_data, 'verdict' : verdict})
 
@@ -53,7 +49,7 @@ def submissions(requests):
         return render(requests, 'submissions.html', {'form':form})
 
 
-def signup(request):
+def signup(requests):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -64,5 +60,14 @@ def signup(request):
             return redirect('login')
     else:
         form = UserCreationForm()
-    return render(request, 'signup.html', {'form': form})
+    return render(requests, 'signup.html', {'form': form})
 
+
+def contestlist(requests):
+    contests = Contest.objects.all()
+    return render(requests, 'contestlist.html', {'contests': contests})
+
+
+def contest_detail(requests, contest_pk):
+    contest = get_object_or_404(Contest, pk = contest_pk)
+    return render(requests, 'contest_detail.html', {'contest': contest})

@@ -1,4 +1,5 @@
 <!-- parent template from which all other temapltes inherit -->
+
 {% load static %}
 <!doctype html>
 
@@ -23,6 +24,7 @@
 
           <li><a href="{% url 'problemset' %}"> PROBLEMSET </a></li>
           <li><a href="{% url 'submissions' %}"> SUBMISSIONS </a></li>
+          <li><a href = "{% url 'contestlist' %}"> CONTESTS </a></li>
 
        </ul>
       {% endblock %}
