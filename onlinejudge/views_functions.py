@@ -50,12 +50,12 @@ def check_verdict(submission_filepath, submission_id , input_filepath, expected_
         return get_verdict("err.txt", expected_output_filepath)
 
 
-    elif language == ("c"):
+    elif language == ("c") or language == ("cpp"):
 
         # What is 'r' doing?  What kind of variable is it?
         # Why are we always getting a complilation error?
         #
-        r = os.system("gcc -o " + "binaries/" + submission_id + " " + submission_filepath)
+        r = os.system("g++ -o " + "binaries/" + submission_id + " " + submission_filepath)
 
         if r != 0:
             return "CE"

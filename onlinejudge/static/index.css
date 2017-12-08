@@ -16,6 +16,16 @@ body
     text-align:center;
     border-bottom: 2px black solid;
 }
+table, th, td
+{
+    align-self: center;
+    margin: auto;
+    border: 2px solid black;
+}
+th, td
+{
+    padding: 15px;
+}
 li a 
 {
 
@@ -32,6 +42,7 @@ li a:hover
 }
 #content
 {
+    align-content: center;
     text-align: center;
     padding-top: 5%;
 }

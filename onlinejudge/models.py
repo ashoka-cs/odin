@@ -43,6 +43,11 @@ class Submission(models.Model):
     def __str__(self):
         return "Submission number: "+ str(self.id)
 
+class User_Contest(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
+    
+
 class SubmissionForm(ModelForm):
     class Meta:
         model = Submission

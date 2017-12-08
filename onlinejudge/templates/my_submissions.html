@@ -1,0 +1,22 @@
+
+{% extends "base.html" %}
+
+{% block title %} My Submissions {% endblock %}
+
+{% block content %}
+  <table>
+  	<tr>
+  	<th> Problem </th>
+  	<th> Time Of Submission </th>
+  	<th> Language </th>
+  	<th> Verdict </th>
+  	</tr>
+  {% for submission in submissions %}
+  	<tr>
+  	<td> {{submission.problem}} </td>
+  	<td> {{submission.time_of_submission}} </td>
+  	<td> {{submission.language}} </td>
+  	<td> {{submission.verdict}}</td>
+  {% endfor %}
+    </table>
+{% endblock %}

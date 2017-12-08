@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect,  get_object_or_404
-from .models import Problem, SubmissionForm, Contest
+from .models import Problem, SubmissionForm, Contest, Submission
 import os
 import datetime
 from onlinejudge.views_functions import*
@@ -21,6 +21,11 @@ def problemset(requests):
     problems = Problem.objects.all()
     return render(requests, 'problemset.html', {'problems' : problems})
 
+def my_submissions(requests):
+    submissions = Submission.objects.filter(user__exact=requests.user)
+    print(submissions)
+    return render(requests, 'my_submissions.html', {'submissions' : submissions})
+
 def submissions(requests, problem=None):
 
     # if this is a POST request we need to process the form data
@@ -36,7 +41,8 @@ def submissions(requests, problem=None):
             obj.user = requests.user
             obj.save()
             verdict = check_test_cases(obj)
-
+            obj.verdict = verdict
+            obj.save()
             return render(requests, 'verdict.html', {'cleaned_data': form.cleaned_data, 'verdict' : verdict})
 
     # if a GET (or any other method) we'll create a blank form
@@ -52,7 +58,7 @@ def signup(requests):
             form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
+         #   user = authenticate(username=username, password=raw_password)
             return redirect('login')
     else:
         form = UserCreationForm()
@@ -77,12 +83,10 @@ def contest_detail(requests, contest_pk):
     return render(requests, 'contest_detail.html', {'contest': contest,'problems': problems,'running': running})
 
 
-
-
-
 def problem_detail(requests, problem_pk):
 
     problem = get_object_or_404(Problem, pk = problem_pk)
+
     if requests.method == 'GET':
         return submissions(requests, problem) #render(requests, 'problem_detail.html', {'problem': problem, 'form': form})
     elif requests.method == 'POST':

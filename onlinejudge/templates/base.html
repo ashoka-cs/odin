@@ -18,15 +18,15 @@
 
           {% if user.is_authenticated %}
             <li><a href="{% url 'logout' %}"> LOGOUT </a> </li>
+ 
+            <li><a href="{% url 'my_submissions' %}"> MY SUBMISSIONS </a></li>
+
           {% else %}
             <li><a href="{% url 'login' %}"> LOGIN </a></li>
-            <li><a href="{% url 'signup' %}"> SIGNUP </a><li>
+            <li><a href="{% url 'signup' %}"> SIGNUP </a><li>           
           {% endif %}
-
           <li><a href="{% url 'problemset' %}"> PROBLEMSET </a></li>
-          <li><a href="{% url 'submissions' %}"> SUBMISSIONS </a></li>
           <li><a href = "{% url 'contestlist' %}"> CONTESTS </a></li>
-
        </ul>
       {% endblock %}
     </div>

@@ -12,7 +12,7 @@ urlpatterns = [
     url(r'^submissions/$', views.submissions, name = "submissions"),
     url(r'^logout/$', auth_views.logout , {'next_page': 'login'} , name="logout"),
     url(r'^signup/$', views.signup, name='signup'),
-
+    url(r'^my_submissions/$', views.my_submissions, name="my_submissions"),
     url(r'^contestlist/$', views.contestlist, name = 'contestlist'),
 
     url(r'^contest/(?P<contest_pk>\d+)/$', views.contest_detail, name = 'contest_detail'),
