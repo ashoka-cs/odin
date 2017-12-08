@@ -5,6 +5,19 @@
   <h1>{{ contest.contest_title }}</h1>
   <hr>
   <p>{{contest.contest_description}} </p>
+
+  
+    {% for problem in problems %}
+
+          {{ problem.problem_id }}
+          <br>
+          {{problem.problem_title}}
+          <br>
+          {{problem.problem_statement}}
+          <hr>
+      {% endfor %}
+  
+
   {% for problem in problems %}
         {{ problem.problem_id }}
         <br>
@@ -13,6 +26,7 @@
         {{problem.problem_statement}}
         <hr>
     {% endfor %}
+
   <p><a href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"> hint </a> </p>
 
 {% endblock %}

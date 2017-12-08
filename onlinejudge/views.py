@@ -49,7 +49,7 @@ def submissions(requests, problem=None):
 
 
 def signup(requests):
-    if request.method == 'POST':
+    if requests.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
@@ -73,6 +73,10 @@ def contest_detail(requests, contest_pk):
     problems=Problem.objects.filter(contest=str(contest_pk))
 
 
+    return render(requests, 'contest_detail.html', {'contest': contest,'problems': problems,'running': running})
+
+
+
     return render(requests, 'contest_detail.html', {'contest': contest,'problems': problems})
 
 def problem_detail(requests, problem_pk):
@@ -83,3 +87,4 @@ def problem_detail(requests, problem_pk):
         return submissions(requests, problem) #render(requests, 'problem_detail.html', {'problem': problem, 'form': form})
     elif requests.method == 'POST':
         return submissions(requests)
+
