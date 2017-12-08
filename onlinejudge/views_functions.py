@@ -58,7 +58,7 @@ def check_verdict(submission_filepath, submission_id , input_filepath, expected_
         r = os.system("g++ -o " + "binaries/" + submission_id + " " + submission_filepath)
 
         if r != 0:
-            return "CE"
+            return "Compilation Error"
 
         os.system( "./timeout -t " + str(timelimit) + " -m " + str(memlimit) + " binaries/" + submission_id + " < " + input_filepath + " 1> temp.txt 2> err.txt" )
 
