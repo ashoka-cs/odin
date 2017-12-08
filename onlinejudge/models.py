@@ -4,6 +4,8 @@ from django.forms import ModelForm
 import datetime
 
 
+
+
 # Create your models here.
 class Contest(models.Model):
     contest_title=models.CharField(max_length=200)

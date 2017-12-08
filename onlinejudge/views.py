@@ -71,4 +71,8 @@ def contestlist(requests):
 def contest_detail(requests, contest_pk):
     contest = get_object_or_404(Contest, pk = contest_pk)
     problems=Problem.objects.filter(contest=str(contest_pk))
-    return render(requests, 'contest_detail.html', {'contest': contest,'problems': problems})
+    start_time=contest.start_time
+    end_time=contest.end_time
+    running=is_running(start_time,end_time)
+    print(running)
+    return render(requests, 'contest_detail.html', {'contest': contest,'problems': problems,'running': running})
