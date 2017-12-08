@@ -14,7 +14,7 @@ def index(requests):
     return render(requests, 'index.html', {}) # the third argument is for variables to be passed to the file
 
 #
-def signup(requests):
+def signup(requests): 
     return render(requests, 'signup.html', {})
 
 # redundant view
