@@ -69,7 +69,11 @@ def contestlist(requests):
 
 def contest_detail(requests, contest_pk):
     contest = get_object_or_404(Contest, pk = contest_pk)
-
+        
+    start_time=contest.start_time
+    end_time=contest.end_time
+    running=is_running(start_time,end_time)
+    print(running)
     problems=Problem.objects.filter(contest=str(contest_pk))
 
 
@@ -77,12 +81,11 @@ def contest_detail(requests, contest_pk):
 
 
 
-    return render(requests, 'contest_detail.html', {'contest': contest,'problems': problems})
+
 
 def problem_detail(requests, problem_pk):
+
     problem = get_object_or_404(Problem, pk = problem_pk)
-
-
     if requests.method == 'GET':
         return submissions(requests, problem) #render(requests, 'problem_detail.html', {'problem': problem, 'form': form})
     elif requests.method == 'POST':

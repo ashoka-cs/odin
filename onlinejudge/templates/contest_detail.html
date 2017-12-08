@@ -6,19 +6,11 @@
   <hr>
   <p>{{contest.contest_description}} </p>
 
+  {% if running %}
+ 
   
+
     {% for problem in problems %}
-
-          {{ problem.problem_id }}
-          <br>
-          {{problem.problem_title}}
-          <br>
-          {{problem.problem_statement}}
-          <hr>
-      {% endfor %}
-  
-
-  {% for problem in problems %}
         {{ problem.problem_id }}
         <br>
         <a href= "{% url 'problem_detail' problem_pk=problem.pk %}" > {{problem.problem_title}} </a>
@@ -26,6 +18,9 @@
         {{problem.problem_statement}}
         <hr>
     {% endfor %}
+  {% else %}
+    <p>Contest is not active</p>
+  {% endif %}
 
   <p><a href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"> hint </a> </p>
 
