@@ -8,15 +8,10 @@
 
   {% if running %}
  
-  
 
     {% for problem in problems %}
-        {{ problem.problem_id }}
+        <a href="{% url 'problem_detail' problem_pk=problem.pk %}">{{ problem.problem_title }}</a>
         <br>
-        {{problem.problem_title}}
-        <br>
-        {{problem.problem_statement}}
-        <hr>
     {% endfor %}
   {% else %}
     <p>Contest is not active</p>

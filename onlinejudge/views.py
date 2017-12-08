@@ -21,7 +21,7 @@ def problemset(requests):
     problems = Problem.objects.all()
     return render(requests, 'problemset.html', {'problems' : problems})
 
-def submissions(requests):
+def submissions(requests, problem=None):
 
     # if this is a POST request we need to process the form data
     if requests.method == 'POST':
@@ -41,7 +41,7 @@ def submissions(requests):
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        form = SubmissionForm()
+        form = SubmissionForm(initial={"problem" : problem})
         return render(requests, 'submissions.html', {'form':form})
 
 
