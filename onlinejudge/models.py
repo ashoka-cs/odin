@@ -4,6 +4,8 @@ from django.forms import ModelForm
 import datetime
 
 
+
+
 # Create your models here.
 class Contest(models.Model):
     contest_title=models.CharField(max_length=200)
@@ -13,6 +15,7 @@ class Contest(models.Model):
 
     def __str__(self):
         return str(self.id) + " : " + self.contest_title
+    
 class Problem(models.Model):
     problem_id = models.CharField(max_length=30, primary_key=True)
     problem_title = models.CharField(max_length=30)
@@ -38,7 +41,11 @@ class Submission(models.Model):
     verdict=models.CharField(max_length=50)
 
     def __str__(self):
+<<<<<<< HEAD
         return "Submission number: "+str(self.id) 
+=======
+        return "Submission number: "+ str(self.id)
+>>>>>>> 060237c1e244f6fe23053d37fc9515b913d00d9c
 
 
 class SubmissionForm(ModelForm):

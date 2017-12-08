@@ -13,6 +13,13 @@ from django.contrib.auth.forms import UserCreationForm
 def index(requests):
     return render(requests, 'index.html', {}) # the third argument is for variables to be passed to the file
 
+<<<<<<< HEAD
+=======
+#
+def signup(requests): 
+    return render(requests, 'signup.html', {})
+
+>>>>>>> 060237c1e244f6fe23053d37fc9515b913d00d9c
 # redundant view
 def login(requests):
     return render(requests, 'login.html', {})
@@ -47,7 +54,11 @@ def submissions(requests):
 
 def signup(requests):
     if requests.method == 'POST':
+<<<<<<< HEAD
         form = UserCreationForm(requests.POST)
+=======
+        form = UserCreationForm(request.POST)
+>>>>>>> 060237c1e244f6fe23053d37fc9515b913d00d9c
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -66,5 +77,30 @@ def contestlist(requests):
 
 def contest_detail(requests, contest_pk):
     contest = get_object_or_404(Contest, pk = contest_pk)
+<<<<<<< HEAD
     problems=Problem.objects.filter(contest=str(contest_pk))
     return render(requests, 'contest_detail.html', {'contest': contest,'problems': problems})
+=======
+        
+    start_time=contest.start_time
+    end_time=contest.end_time
+    running=is_running(start_time,end_time)
+    print(running)
+    problems=Problem.objects.filter(contest=str(contest_pk))
+
+
+    return render(requests, 'contest_detail.html', {'contest': contest,'problems': problems,'running': running})
+
+
+
+
+
+def problem_detail(requests, problem_pk):
+
+    problem = get_object_or_404(Problem, pk = problem_pk)
+    if requests.method == 'GET':
+        return submissions(requests, problem) #render(requests, 'problem_detail.html', {'problem': problem, 'form': form})
+    elif requests.method == 'POST':
+        return submissions(requests)
+
+>>>>>>> 060237c1e244f6fe23053d37fc9515b913d00d9c
