@@ -41,12 +41,7 @@ class Submission(models.Model):
     verdict=models.CharField(max_length=50)
 
     def __str__(self):
-<<<<<<< HEAD
-        return "Submission number: "+str(self.id) 
-=======
         return "Submission number: "+ str(self.id)
->>>>>>> 060237c1e244f6fe23053d37fc9515b913d00d9c
-
 
 class SubmissionForm(ModelForm):
     class Meta:
