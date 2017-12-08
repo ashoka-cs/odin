@@ -13,10 +13,6 @@ from django.contrib.auth.forms import UserCreationForm
 def index(requests):
     return render(requests, 'index.html', {}) # the third argument is for variables to be passed to the file
 
-#
-def signup(requests):
-    return render(requests, 'signup.html', {})
-
 # redundant view
 def login(requests):
     return render(requests, 'login.html', {})
@@ -50,8 +46,8 @@ def submissions(requests):
 
 
 def signup(requests):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+    if requests.method == 'POST':
+        form = UserCreationForm(requests.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
