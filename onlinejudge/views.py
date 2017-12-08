@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect,  get_object_or_404
-from .models import Problem, SubmissionForm, Contest, Submission
+from .models import Problem, SubmissionForm, Contest, Submission, LeaderboardEntry
 import os
 import datetime
 from onlinejudge.views_functions import*
@@ -7,6 +7,7 @@ from onlinejudge.views_functions import*
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 
+# TODO order views by a better metric, currently they're just randomly distributed.
 
 
 # redundant view
@@ -17,6 +18,9 @@ def index(requests):
 def login(requests):
     return render(requests, 'login.html', {})
 
+def leaderboard(requests):
+    # Here we want to display the leaderboard sorted by score. 
+    return render(requests, 'leaderboard.html', {})
 def problemset(requests):
     problems = Problem.objects.all()
     return render(requests, 'problemset.html', {'problems' : problems})
@@ -43,6 +47,9 @@ def submissions(requests, problem=None):
             verdict = check_test_cases(obj)
             obj.verdict = verdict
             obj.save()
+            if(obj.verdict=="Correct Answer"):
+                pass
+                # Update the leaderboard entry for this user
             return render(requests, 'verdict.html', {'cleaned_data': form.cleaned_data, 'verdict' : verdict})
 
     # if a GET (or any other method) we'll create a blank form

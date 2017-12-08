@@ -63,7 +63,7 @@ def check_verdict(submission_filepath, submission_id , input_filepath, expected_
         os.system( "./timeout -t " + str(timelimit) + " -m " + str(memlimit) + " binaries/" + submission_id + " < " + input_filepath + " 1> temp.txt 2> err.txt" )
 
         return get_verdict("err.txt", expected_output_filepath)
-    return "LANGUAGE NOT FOUND"
+    return "LANGUAGE NOT FOUND (Error 1023: report this problem)"
 
 
 
@@ -109,7 +109,7 @@ def compare_files(file1, file2):
                 if (user_output[i] != expected_output[i]):
                     return "Wrong Answer"
         return "Correct Answer"
-        
+    return "Error 1: Files not found, report this error."
 def is_running(start_time,end_time):
     current_time=datetime.datetime.now(datetime.timezone.utc)
 

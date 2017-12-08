@@ -43,10 +43,12 @@ class Submission(models.Model):
     def __str__(self):
         return "Submission number: "+ str(self.id)
 
-class User_Contest(models.Model):
+class LeaderboardEntry(models.Model): # For one user, not for one rank. 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
-    
+    score = models.IntegerField() # Simply ranks by score currently. 
+#    last_submission_time = models.DateTimeField(blank=True, null=True)
+
 
 class SubmissionForm(ModelForm):
     class Meta:
