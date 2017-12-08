@@ -8,7 +8,7 @@
   {% for problem in problems %}
         {{ problem.problem_id }}
         <br>
-        <a href= "{% url 'problem_detail' problem_pk=problem.pk %}" > {{problem.problem_title}} </a>
+        {{problem.problem_title}}
         <br>
         {{problem.problem_statement}}
         <hr>

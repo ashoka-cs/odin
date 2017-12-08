@@ -16,6 +16,4 @@ urlpatterns = [
     url(r'^contestlist/$', views.contestlist, name = 'contestlist'),
 
     url(r'^contest/(?P<contest_pk>\d+)/$', views.contest_detail, name = 'contest_detail'),
-    url(r'^problem/(?P<problem_pk>\d+)/$', views.problem_detail, name = 'problem_detail'),
-
 ]

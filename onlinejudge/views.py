@@ -25,7 +25,8 @@ def problemset(requests):
     problems = Problem.objects.all()
     return render(requests, 'problemset.html', {'problems' : problems})
 
-def submissions(requests, problem=None):
+def submissions(requests):
+
     # if this is a POST request we need to process the form data
     if requests.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -44,7 +45,7 @@ def submissions(requests, problem=None):
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        form = SubmissionForm(initial={'problem':problem})
+        form = SubmissionForm()
         return render(requests, 'submissions.html', {'form':form})
 
 
@@ -69,17 +70,5 @@ def contestlist(requests):
 
 def contest_detail(requests, contest_pk):
     contest = get_object_or_404(Contest, pk = contest_pk)
-
     problems=Problem.objects.filter(contest=str(contest_pk))
-
-
     return render(requests, 'contest_detail.html', {'contest': contest,'problems': problems})
-
-def problem_detail(requests, problem_pk):
-    problem = get_object_or_404(Problem, pk = problem_pk)
-
-
-    if requests.method == 'GET':
-        return submissions(requests, problem) #render(requests, 'problem_detail.html', {'problem': problem, 'form': form})
-    elif requests.method == 'POST':
-        return submissions(requests)

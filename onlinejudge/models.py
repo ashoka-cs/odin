@@ -38,10 +38,13 @@ class Submission(models.Model):
     verdict=models.CharField(max_length=50)
 
     def __str__(self):
-        return "Submission number: "+str(self.id)
+        return "Submission number: "+str(self.id) 
 
 
 class SubmissionForm(ModelForm):
     class Meta:
         model = Submission
         fields = ['problem','code','language']
+
+
+
