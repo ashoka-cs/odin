@@ -13,6 +13,7 @@ class Contest(models.Model):
 
     def __str__(self):
         return str(self.id) + " : " + self.contest_title
+    
 class Problem(models.Model):
     problem_id = models.CharField(max_length=30, primary_key=True)
     problem_title = models.CharField(max_length=30)
@@ -38,7 +39,7 @@ class Submission(models.Model):
     verdict=models.CharField(max_length=50)
 
     def __str__(self):
-        return "Submission number: "+str(self.id)
+        return "Submission number: "+ str(self.id)
 
 
 class SubmissionForm(ModelForm):
