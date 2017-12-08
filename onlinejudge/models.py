@@ -21,6 +21,7 @@ class Problem(models.Model):
     memlimit = models.IntegerField(default=256000)
     no_of_test_cases= models.IntegerField(default=1)
     contest=models.ForeignKey(Contest, on_delete= models.CASCADE)
+    problem_score=models.IntegerField(default=1)
 
 
     def __str__(self):
