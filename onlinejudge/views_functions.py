@@ -110,15 +110,6 @@ def compare_files(file1, file2):
                     return "Wrong Answer"
         return "Correct Answer"
 
-def is_running(start_time,end_time):
-    current_time=datetime.datetime.now(datetime.timezone.utc)
-
-    print(current_time)
-    if current_time>=start_time and current_time<=end_time:
-        running=True
-    else:
-        running=False
-    return running
 
 
 
