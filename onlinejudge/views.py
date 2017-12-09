@@ -40,16 +40,15 @@ def submissions(requests, problem=None):
             # process the data in form.cleaned_data as required
             cleaned_data = form.cleaned_data
             submission = form.save(commit=False)
-
+            submission.contest = submission.problem.contest
             submission.user = requests.user
             submission.save()
             verdict = check_test_cases(submission)
             submission.verdict = verdict
             submission.save()
             if(submission.verdict=="Correct Answer"):
-                leaderboardentry = LeaderboardEntry.objects.filter(contest_id=submission.problem.contest_id, user=requests.user)[0]
-                leaderboardentry.score+=1
-                leaderboardentry.save()
+                leaderboardentry = LeaderboardEntry.objects.get(contest_id=submission.contest_id, user=requests.user)
+                leaderboardentry.on_accepted_problem(submission.problem_id)
             return render(requests, 'verdict.html', {'cleaned_data': form.cleaned_data, 'verdict' : verdict})
 
     # if a GET (or any other method) we'll create a blank form

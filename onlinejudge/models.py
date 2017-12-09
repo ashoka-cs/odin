@@ -52,20 +52,29 @@ class Problem(models.Model):
 class Submission(models.Model):
 
     problem = models.ForeignKey(Problem, on_delete= models.CASCADE)
-    time_of_submission = models.DateTimeField(auto_now=True)
+    contest = models.ForeignKey(Contest, on_delete= models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    time_of_submission = models.DateTimeField(auto_now=True)
     code = models.TextField()
     languages = [['py','Python 3'],['cpp','C++']]
     language = models.CharField(max_length = 20, default = 'py', choices = languages)
     verdict=models.CharField(max_length=50)
 
     def __str__(self):
-        return "Submission number: "+ str(self.id)
+        return str(self.problem) + " | " + str(self.contest) + " | " + str(self.user) + " | " + str(self.verdict)
 
-class LeaderboardEntry(models.Model): # For one user, not for one rank. 
+class LeaderboardEntry(models.Model): # For one user, not for one rank - therefore think of this as the relation between User
+    # and contest, each User has one LeaderboardEntry in one Contest.
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
-    score = models.IntegerField(default=0) # Simply ranks by score currently. 
+    score = models.IntegerField(default=0) # Simply ranks by score currently.
+    def on_accepted_problem(self, problem): # problem is an instance of model Problem
+        # if there are more than 1 accepted problem submission for this user and this contest then we don't need to add to score.
+        submission = Submission.objects.filter(contest_id=self.contest_id,user_id=self.user_id,problem_id=problem,verdict="Correct Answer")
+        print(submission)
+        if(len(submission)==1):
+            self.score+=1
+        self.save()
     def __str__(self):
         return "User " + str(self.user) + " is registered for Contest #" + str(self.contest)
 #    last_submission_time = models.DateTimeField(blank=True, null=True)
