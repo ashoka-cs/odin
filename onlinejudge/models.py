@@ -69,13 +69,14 @@ class LeaderboardEntry(models.Model): # For one user, not for one rank - therefo
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
     score = models.IntegerField(default=0) # Simply ranks by score currently.
-
-    def on_correct_answer(self, problem): # problem is an instance of model Problem
+    last_submission_time = models.DateTimeField()
+    def on_correct_answer(self, problem, time_of_submission): # problem is an instance of model Problem
         # if there are more than 1 accepted problem submission for this user and this contest then we don't need to add to score.
         submission = Submission.objects.filter(contest_id=self.contest_id,user_id=self.user_id,problem_id=problem,verdict="Correct Answer")
         print(submission)
         if(len(submission)==1): # i.e. if the current accepted submission is the ONLY accepted submission so far, we can increase score.
             self.score+=1
+            self.last_submission_time= time_of_submission
         self.save()
 
     def __str__(self):

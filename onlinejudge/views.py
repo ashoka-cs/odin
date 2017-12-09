@@ -19,7 +19,7 @@ def login(requests):
     return render(requests, 'login.html', {})
 
 def leaderboard(requests, contest_pk):
-    leaderboardentries = LeaderboardEntry.objects.filter(contest_id=contest_pk).order_by('-score')
+    leaderboardentries = LeaderboardEntry.objects.filter(contest_id=contest_pk).order_by('-score', 'last_submission_time')
     return render(requests, 'leaderboard.html', {'leaderboardentries' : leaderboardentries})
 def problemset(requests):
     problems = Problem.objects.all()
@@ -51,7 +51,7 @@ def submissions(requests, problem=None):
 
             if(submission.verdict=="Correct Answer"):
                 leaderboardentry = LeaderboardEntry.objects.get(contest_id=submission.contest_id, user=requests.user)
-                leaderboardentry.on_correct_answer(submission.problem_id)
+                leaderboardentry.on_correct_answer(submission.problem_id, submission.time_of_submission)
 
             return my_submissions(requests)
             return render(requests, 'verdict.html', {'cleaned_data': form.cleaned_data, 'verdict' : verdict})

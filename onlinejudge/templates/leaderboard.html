@@ -8,6 +8,7 @@
 <th> Rank </th>
 <th> User </th>
 <th> Score </th>
+<th> Last Submission Time </th>
   {% for leaderboardentry in leaderboardentries %}
   <tr>
     <td>
@@ -18,6 +19,9 @@
     </td>
     <td>
     {{leaderboardentry.score}}
+    </td>
+    <td>
+    {{leaderboardentry.last_submission_time}}
     </td>
   </tr>
   {% endfor %}
