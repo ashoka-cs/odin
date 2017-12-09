@@ -26,7 +26,7 @@ def problemset(requests):
     return render(requests, 'problemset.html', {'problems' : problems})
 
 def my_submissions(requests):
-    submissions = Submission.objects.filter(user__exact=requests.user)
+    submissions = Submission.objects.filter(user__exact=requests.user).order_by('-time_of_submission')
     return render(requests, 'my_submissions.html', {'submissions' : submissions})
 
 def submissions(requests, problem=None):
@@ -43,12 +43,17 @@ def submissions(requests, problem=None):
             submission.contest = submission.problem.contest
             submission.user = requests.user
             submission.save()
+            
             verdict = check_test_cases(submission)
+
             submission.verdict = verdict
             submission.save()
+
             if(submission.verdict=="Correct Answer"):
                 leaderboardentry = LeaderboardEntry.objects.get(contest_id=submission.contest_id, user=requests.user)
-                leaderboardentry.on_accepted_problem(submission.problem_id)
+                leaderboardentry.on_correct_answer(submission.problem_id)
+
+            return my_submissions(requests)
             return render(requests, 'verdict.html', {'cleaned_data': form.cleaned_data, 'verdict' : verdict})
 
     # if a GET (or any other method) we'll create a blank form

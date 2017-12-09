@@ -36,21 +36,22 @@ class Contest(models.Model):
         
     
 class Problem(models.Model):
+
+    contest=models.ForeignKey(Contest, on_delete= models.CASCADE)
+
+
     problem_id = models.CharField(max_length=30, primary_key=True)
     problem_title = models.CharField(max_length=30)
     problem_statement = models.TextField()
     timelimit = models.IntegerField(default=1)
     memlimit = models.IntegerField(default=256000)
     no_of_test_cases= models.IntegerField(default=1)
-    contest=models.ForeignKey(Contest, on_delete= models.CASCADE)
     problem_score=models.IntegerField(default=1)
-
 
     def __str__(self):
         return str(self.problem_id) + " : " + self.problem_title
 
 class Submission(models.Model):
-
     problem = models.ForeignKey(Problem, on_delete= models.CASCADE)
     contest = models.ForeignKey(Contest, on_delete= models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -64,17 +65,19 @@ class Submission(models.Model):
         return str(self.problem) + " | " + str(self.contest) + " | " + str(self.user) + " | " + str(self.verdict)
 
 class LeaderboardEntry(models.Model): # For one user, not for one rank - therefore think of this as the relation between User
-    # and contest, each User has one LeaderboardEntry in one Contest.
+    # and contest, each User has one LeaderboardEntry in each Contest.
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
     score = models.IntegerField(default=0) # Simply ranks by score currently.
-    def on_accepted_problem(self, problem): # problem is an instance of model Problem
+
+    def on_correct_answer(self, problem): # problem is an instance of model Problem
         # if there are more than 1 accepted problem submission for this user and this contest then we don't need to add to score.
         submission = Submission.objects.filter(contest_id=self.contest_id,user_id=self.user_id,problem_id=problem,verdict="Correct Answer")
         print(submission)
-        if(len(submission)==1):
+        if(len(submission)==1): # i.e. if the current accepted submission is the ONLY accepted submission so far, we can increase score.
             self.score+=1
         self.save()
+
     def __str__(self):
         return "User " + str(self.user) + " is registered for Contest #" + str(self.contest)
 #    last_submission_time = models.DateTimeField(blank=True, null=True)
