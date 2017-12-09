@@ -13,8 +13,27 @@ class Contest(models.Model):
     end_time=models.DateTimeField()
     contest_description=models.TextField()
 
+    def is_running(self):
+        current_time=datetime.datetime.now(datetime.timezone.utc)
+        print(current_time)
+        if current_time > self.start_time and current_time < self.end_time:
+            return True
+        return False
+
     def __str__(self):
         return str(self.id) + " : " + self.contest_title
+
+    def save(self, *args, **kwargs):
+        super(Contest, self).save(*args, **kwargs)
+        if not self.is_running():
+            leaderboardentries = LeaderboardEntry.objects.filter(contest=self).order_by('-score')
+            users = User.objects.all()
+            for user in users:
+                 LeaderboardEntry.objects.create(user_id=user.id,contest_id=self.id)
+                 print(user)
+        
+
+        
     
 class Problem(models.Model):
     problem_id = models.CharField(max_length=30, primary_key=True)
@@ -46,7 +65,9 @@ class Submission(models.Model):
 class LeaderboardEntry(models.Model): # For one user, not for one rank. 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
-    score = models.IntegerField() # Simply ranks by score currently. 
+    score = models.IntegerField(default=0) # Simply ranks by score currently. 
+    def __str__(self):
+        return "User " + str(self.user) + " is registered for Contest #" + str(self.contest)
 #    last_submission_time = models.DateTimeField(blank=True, null=True)
 
 

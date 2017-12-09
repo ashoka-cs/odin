@@ -1,8 +1,25 @@
 
 {% extends "base.html" %}
-
 {% block title %} Leaderboard {% endblock %}
 
 {% block content %}
-  
+<table>
+<tr>
+<th> Rank </th>
+<th> User </th>
+<th> Score </th>
+  {% for leaderboardentry in leaderboardentries %}
+  <tr>
+    <td>
+    {{forloop.counter}}
+    </td>
+    <td>
+    {{leaderboardentry.user}}
+    </td>
+    <td>
+    {{leaderboardentry.score}}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
 {% endblock %}

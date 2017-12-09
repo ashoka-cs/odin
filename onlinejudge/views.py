@@ -18,16 +18,15 @@ def index(requests):
 def login(requests):
     return render(requests, 'login.html', {})
 
-def leaderboard(requests):
-    # Here we want to display the leaderboard sorted by score. 
-    return render(requests, 'leaderboard.html', {})
+def leaderboard(requests, contest_pk):
+    leaderboardentries = LeaderboardEntry.objects.filter(contest_id=contest_pk).order_by('-score')
+    return render(requests, 'leaderboard.html', {'leaderboardentries' : leaderboardentries})
 def problemset(requests):
     problems = Problem.objects.all()
     return render(requests, 'problemset.html', {'problems' : problems})
 
 def my_submissions(requests):
     submissions = Submission.objects.filter(user__exact=requests.user)
-    print(submissions)
     return render(requests, 'my_submissions.html', {'submissions' : submissions})
 
 def submissions(requests, problem=None):
@@ -40,16 +39,17 @@ def submissions(requests, problem=None):
         if form.is_valid():
             # process the data in form.cleaned_data as required
             cleaned_data = form.cleaned_data
-            obj = form.save(commit=False)
+            submission = form.save(commit=False)
 
-            obj.user = requests.user
-            obj.save()
-            verdict = check_test_cases(obj)
-            obj.verdict = verdict
-            obj.save()
-            if(obj.verdict=="Correct Answer"):
-                pass
-                # Update the leaderboard entry for this user
+            submission.user = requests.user
+            submission.save()
+            verdict = check_test_cases(submission)
+            submission.verdict = verdict
+            submission.save()
+            if(submission.verdict=="Correct Answer"):
+                leaderboardentry = LeaderboardEntry.objects.filter(contest_id=submission.problem.contest_id, user=requests.user)[0]
+                leaderboardentry.score+=1
+                leaderboardentry.save()
             return render(requests, 'verdict.html', {'cleaned_data': form.cleaned_data, 'verdict' : verdict})
 
     # if a GET (or any other method) we'll create a blank form
@@ -79,14 +79,8 @@ def contestlist(requests):
 
 def contest_detail(requests, contest_pk):
     contest = get_object_or_404(Contest, pk = contest_pk)
-        
-    start_time=contest.start_time
-    end_time=contest.end_time
-    running=is_running(start_time,end_time)
-    print(running)
+    running=contest.is_running()
     problems=Problem.objects.filter(contest=str(contest_pk))
-
-
     return render(requests, 'contest_detail.html', {'contest': contest,'problems': problems,'running': running})
 
 

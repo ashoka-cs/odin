@@ -16,7 +16,7 @@ body
     text-align:center;
     border-bottom: 2px black solid;
 }
-table, th, td
+table
 {
     align-self: center;
     margin: auto;
@@ -25,6 +25,15 @@ table, th, td
 th, td
 {
     padding: 15px;
+}
+tr > td
+{
+    border-top: 2px solid black;
+    border-right: 2px solid black;
+}
+tr > th
+{
+    border-right: 2px solid black;
 }
 li a 
 {

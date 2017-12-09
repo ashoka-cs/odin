@@ -2,7 +2,7 @@
 import os
 from django.shortcuts import render
 import datetime
-
+# TODO Make error messages more consistent and document them somewhere
 # For each submission, the verdict is checked for each test case.
 def check_test_cases(submission):
 
@@ -17,8 +17,6 @@ def check_test_cases(submission):
     memlimit = submission.problem.memlimit
     language = submission.language
 
-
-
     for i in range(1, no_of_test_cases + 1):
         input_filepath = "problems/" + str(problem_id) + "/input" + str(i) + ".txt"
         expected_output_filepath = "problems/" + str(problem_id) + "/expected_output" + str(i) + ".txt"
@@ -28,8 +26,6 @@ def check_test_cases(submission):
 
         if (verdict != "Correct Answer"):
             break
-
-    print(verdict)
     return verdict
 
 
@@ -63,7 +59,7 @@ def check_verdict(submission_filepath, submission_id , input_filepath, expected_
         os.system( "./timeout -t " + str(timelimit) + " -m " + str(memlimit) + " binaries/" + submission_id + " < " + input_filepath + " 1> temp.txt 2> err.txt" )
 
         return get_verdict("err.txt", expected_output_filepath)
-    return "LANGUAGE NOT FOUND (Error 1023: report this problem)"
+    return "LANGUAGE NOT FOUND (Error 1023: report this error)"
 
 
 
