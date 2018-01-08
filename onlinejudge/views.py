@@ -50,9 +50,9 @@ def submissions(requests, problem=None):
             submission.save()
 
             if(submission.verdict=="Correct Answer"):
-                leaderboardentry = LeaderboardEntry.objects.get(contest_id=submission.contest_id, user=requests.user)
-                leaderboardentry.on_correct_answer(submission.problem_id, submission.time_of_submission)
-
+                leaderboard_entry = LeaderboardEntry.objects.get(contest_id=submission.contest_id, user=requests.user)
+                leaderboard_entry.on_correct_answer(submission.problem_id, submission.time_of_submission)
+    
             return my_submissions(requests)
             return render(requests, 'verdict.html', {'cleaned_data': form.cleaned_data, 'verdict' : verdict})
 
@@ -67,8 +67,8 @@ def signup(requests):
         form = UserCreationForm(requests.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
+         #   username = form.cleaned_data.get('username')
+         #   raw_password = form.cleaned_data.get('password')
          #   user = authenticate(username=username, password=raw_password)
             return redirect('login')
     else:
@@ -83,7 +83,7 @@ def contestlist(requests):
 
 def contest_detail(requests, contest_pk):
     contest = get_object_or_404(Contest, pk = contest_pk)
-    running=contest.is_running()
+    running = contest.is_running()
     problems=Problem.objects.filter(contest=str(contest_pk))
     return render(requests, 'contest_detail.html', {'contest': contest,'problems': problems,'running': running})
 

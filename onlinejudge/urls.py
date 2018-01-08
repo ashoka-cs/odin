@@ -6,7 +6,7 @@ urlpatterns = [
     #url(r'^$', views.index, name="index"),
     #url(r'^signup/$', views.signup, name="signup"),
     #url(r'^login/$', views.login, name="login"),
-
+    # TODO make strings more consistent, use only 'string', or "string", but not both.
     url(r'^$', auth_views.login, name="login"),
     url(r'^problemset/$', views.problemset, name="problemset"),
     url(r'^submissions/$', views.submissions, name = "submissions"),
