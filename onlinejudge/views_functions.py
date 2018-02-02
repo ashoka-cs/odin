@@ -99,10 +99,14 @@ def compare_files(file1, file2):
         user_output = user_output_file.read().rstrip().splitlines()
 
         if (len(expected_output)!= len(user_output)):
+                print(expected_output)
+                print(user_output)
                 return "Wrong Answer"
         else:
             for i in range (len(user_output)):
                 if (user_output[i] != expected_output[i]):
+                    print(expected_output)
+                    print(user_output)
                     return "Wrong Answer"
         return "Correct Answer"
     return "Error 1: Files not found, report this error."
