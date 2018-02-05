@@ -9,12 +9,14 @@ urlpatterns = [
     # TODO make strings more consistent, use only 'string', or "string", but not both.
     path('', auth_views.login, name="login"),
     path('problemset/', views.problemset, name="problemset"),
-    path('submissions/', views.submissions, name = "submissions"),
+    path('submit/', views.submit, name = "submit"),
     path('logout/', auth_views.logout , {'next_page': 'login'} , name="logout"),
     path('signup/', views.signup, name='signup'),
     path('my_submissions/', views.my_submissions, name="my_submissions"),
     path('contestlist/', views.contestlist, name = 'contestlist'),
-    path('leaderboard/<int:contest_pk>', views.leaderboard, name = 'leaderboard'),
-    path('contest/<int:contest_pk>', views.contest_detail, name = 'contest_detail'),
-    path('problem/<int:problem_pk>', views.problem_detail, name = 'problem_detail'),
+    path('leaderboard/<int:contest_pk>/', views.leaderboard, name = 'leaderboard'),
+    path('contest/<int:contest_pk>/', views.contest_detail, name = 'contest_detail'),
+    path('problem/<int:problem_pk>/', views.problem_detail, name = 'problem_detail'),
+    path('submit/<int:problem_pk>/', views.submit, name='submit'),
+    path('contest/<int:contest_pk>/problem/<int:problem_pk>/', views.contest_problems, name= 'contest_problems')
 ]

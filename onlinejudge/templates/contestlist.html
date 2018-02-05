@@ -4,10 +4,11 @@
 
 {% block content %}
     {% for contest in contests %}
+    {% if contest.visible %}
         <h1> <a href= "{% url 'contest_detail' contest_pk=contest.pk %}" > {{ contest.contest_title }} </a> </h1>
         <br>
         {{ contest.contest_description |safe}}
         <hr>
-      
+    {% endif %}
     {% endfor %}
 {% endblock %}

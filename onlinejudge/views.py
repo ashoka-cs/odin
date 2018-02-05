@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect,  get_object_or_404
 from .models import Problem, SubmissionForm, Contest, Submission, LeaderboardEntry
 import os
 import datetime
-from onlinejudge.views_functions import*
+
+from onlinejudge.views_functions import *
 
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
-
+from django.http import HttpResponse
 # TODO order views by a better metric, currently they're just randomly distributed.
 
 
@@ -29,8 +30,7 @@ def my_submissions(requests):
     submissions = Submission.objects.filter(user__exact=requests.user).order_by('-time_of_submission')
     return render(requests, 'my_submissions.html', {'submissions' : submissions})
 
-def submissions(requests, problem=None):
-
+def submit(requests, problem_pk):
     # if this is a POST request we need to process the form data
     if requests.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -58,8 +58,9 @@ def submissions(requests, problem=None):
 
     # if a GET (or any other method) we'll create a blank form
     else:
+        problem = get_object_or_404(Problem, pk = problem_pk)
         form = SubmissionForm(initial={"problem" : problem})
-        return render(requests, 'submissions.html', {'form':form})
+        return render(requests, 'submit.html', {'form':form})
 
 
 def signup(requests):
@@ -89,10 +90,20 @@ def contest_detail(requests, contest_pk):
 
 
 def problem_detail(requests, problem_pk):
-
     problem = get_object_or_404(Problem, pk = problem_pk)
-
-    if requests.method == 'GET':
+    if requests.method == 'GET' and problem.contest.is_running():
+        return render(requests, 'problem_detail.html', {'problem': problem})
         return submissions(requests, problem) #render(requests, 'problem_detail.html', {'problem': problem, 'form': form})
     elif requests.method == 'POST':
         return submissions(requests)
+    else:
+        return HttpResponse("Error 403/4 : You are not permitted to access this page, and/or it does not exist.")
+
+def contest_problems(requests, contest_pk, problem_pk):
+    contest = get_object_or_404(Contest, pk = contest_pk)
+    problems=Problem.objects.filter(contest=str(contest_pk))
+    if contest.is_running() and contest.visible:
+        return render(requests, 'contest_problems.html', {'contest': contest, 'problems' : problems})
+    else:
+        return contest_detail(requests, contest_pk)
+    return problem_detail(requests, problem_pk)

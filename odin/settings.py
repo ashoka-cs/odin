@@ -120,5 +120,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-LOGIN_REDIRECT_URL = '/odin/problemset'
+LOGIN_REDIRECT_URL = '/odin/contestlist'
 ALLOWED_HOSTS = ['*']
+TIME_ZONE = 'Asia/Kolkata'
+APPEND_SLASH = True

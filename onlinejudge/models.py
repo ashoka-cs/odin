@@ -8,11 +8,11 @@ import datetime
 
 # Create your models here.
 class Contest(models.Model):
-    contest_title=models.CharField(max_length=200)
-    start_time=models.DateTimeField()
+    contest_title=models.CharField(max_length=200) # TODO switch contest_title to simply title (and same for contest_description). 
+    start_time=models.DateTimeField() # TODO (contd.) Writing contest.contest_title is stupid because of the repeated constant, but I have to find all places where that is used. 
     end_time=models.DateTimeField()
     contest_description=models.TextField()
-
+    visible = models.BooleanField(default=True)
     def is_running(self):
         current_time=datetime.datetime.now(datetime.timezone.utc)
         print(current_time)
@@ -69,7 +69,7 @@ class LeaderboardEntry(models.Model): # For one user, not for one rank - therefo
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
     score = models.IntegerField(default=0) # Simply ranks by score currently.
-    last_submission_time = models.DateTimeField()
+    last_submission_time = models.DateTimeField(null=True)
     def on_correct_answer(self, problem, time_of_submission): # problem is an instance of model Problem
         # if there are more than 1 accepted problem submission for this user and this contest then we don't need to add to score.
         submission = Submission.objects.filter(contest_id=self.contest_id,user_id=self.user_id,problem_id=problem,verdict="Correct Answer")

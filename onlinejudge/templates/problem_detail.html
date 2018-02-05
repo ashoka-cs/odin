@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %} {{problem.problem_title}} {% endblock %}
+{% block content %} 
+<h2> {{contest.contest_title}} : {{problem.problem_title }} </h2>
+<p>
+	{{problem.problem_statement | safe}}
+</p>
+<a href="{% url 'submit' problem_pk=problem.pk %}">Submit</a>
+{% endblock %}

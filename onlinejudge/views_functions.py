@@ -1,9 +1,29 @@
 ''' This file defines functions that are called in views.py '''
 import os
 from django.shortcuts import render
+from .models import Problem, SubmissionForm, Contest, Submission, LeaderboardEntry
 import datetime
 # TODO Make error messages more consistent and document them somewhere
 # For each submission, the verdict is checked for each test case.
+
+def handle_submission(submissionform):
+    if submissionform.is_valid():
+            # process the data in submissionform.cleaned_data as required
+            cleaned_data = submissionform.cleaned_data
+            submission = submissionform.save(commit=False)
+            submission.contest = submission.problem.contest
+            submission.user = requests.user
+            submission.save()
+            
+            verdict = check_test_cases(submission)
+
+            submission.verdict = verdict
+            submission.save()
+
+            if(submission.verdict=="Correct Answer"):
+                leaderboard_entry = LeaderboardEntry.objects.get(contest_id=submission.contest_id, user=requests.user)
+                leaderboard_entry.on_correct_answer(submission.problem_id, submission.time_of_submission)
+
 def check_test_cases(submission):
 
     submission_filepath = "submissions/" + str(submission.id) + "." + submission.language

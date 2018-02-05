@@ -1,2 +1,5 @@
-TIMEOUT CPU 1.10 MEM 29116 MAXMEM 29116 STALE 0 MAXMEM_RSS 8628
-<time name="ALL">1140</time>
+Traceback (most recent call last):
+  File "submissions/198.py", line 1, in <module>
+    asd
+NameError: name 'asd' is not defined
+FINISHED CPU 0.00 MEM 0 MAXMEM -1 STALE 0 MAXMEM_RSS -1
