@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
+from django_ace import AceWidget
 import datetime
 
 
@@ -57,7 +58,7 @@ class Submission(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     time_of_submission = models.DateTimeField(auto_now=True)
     code = models.TextField()
-    languages = [['py','Python 3'],['cpp','C++']]
+    languages = [['py','Python 3'],['cpp','C++'],['c','C'],['java','Java']]
     language = models.CharField(max_length = 20, default = 'py', choices = languages)
     verdict=models.CharField(max_length=50)
 
@@ -88,6 +89,7 @@ class SubmissionForm(ModelForm):
     class Meta:
         model = Submission
         fields = ['problem','code','language']
-
-
+        def __init__(self, *args, **kwargs):
+            super(SubmissionForm, self).__init__(*args, **kwargs)
+            self.fields["code"].widget = forms.CharField(widget=AceWidget(mode='python'))
 

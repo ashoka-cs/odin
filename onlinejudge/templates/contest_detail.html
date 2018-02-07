@@ -4,20 +4,13 @@
 
   <h1>{{ contest.contest_title }}</h1>
   <hr>
-  <p>{{contest.contest_description|safe}} </p>
-
   {% if running %}
  
 
     {% for problem in problems %}
-        {{ problem.problem_title }}
+        <h2 class="problem-title"><a href="{% url 'problem_detail' problem_pk=problem.pk %}">{{forloop.counter}} : {{problem.problem_title}}</a></h2>
         <br>
-        <p> 
-        {{problem.problem_statement|safe}}
-        </p>
-        {% if user.is_authenticated %}
-        <a href="{% url 'problem_detail' problem_pk=problem.pk %}">Submit Code for {{problem.problem_title}}</a>
-        {% endif %}
+        
         <br>
         <hr>
     {% endfor %}
